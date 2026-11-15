@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LifeBlood - Blood Donation Management System</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Header Start -->
+<header>
+  <a class="logo" href="?page=home"><span class="logo-mark" aria-hidden="true">♥</span><span>LifeBlood</span></a>
+  <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mainNav">☰</button>
+  <nav id="mainNav">
+    <a href="?page=home">Home</a>
+    <a href="?page=register">Donate</a>
+    <a href="?page=find">Find a donor</a>
+    <a href="?page=inventory">Inventory</a>
+    <a href="?page=requests">Requests</a>
+    <a href="?page=contact">Contact</a>
+  </nav>
+</header>
+<!-- Header End -->
+
+<!-- Hero Section Start -->
+<section id="home" class="hero" data-page="home">
+  <div class="hero-copy">
+    <span class="eyebrow">Every drop brings hope</span>
+    <h1>Be the reason someone gets another tomorrow.</h1>
+    <p>Your simple act of giving can save up to three lives. Join a community of everyday heroes and make your next donation count.</p>
+    <a href="?page=register" class="btn">Become a donor <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="hero-art" aria-hidden="true"><div class="drop-orbit"><div class="drop"><span>♥</span></div></div></div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Dashboard Start -->
+<section id="dashboard" data-page="home">
+  <h2>Your impact at a glance</h2>
+  <div class="stats">
+    <div class="card"><div class="num" id="statDonors">0</div><div class="card-label">Registered donors</div></div>
+    <div class="card"><div class="num" id="statUnits">0</div><div class="card-label">Units available</div></div>
+    <div class="card"><div class="num" id="statRequests">0</div><div class="card-label">Blood requests</div></div>
+    <div class="card"><div class="num" id="statLives">0</div><div class="card-label">Units given to patients</div></div>
+  </div>
+
+  <h3 class="section-subtitle">Blood group availability</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Blood Group</th><th>Units</th><th>Status</th></tr></thead>
+      <tbody id="availabilityBody"></tbody>
+    </table>
+  </div>
+</section>
+<!-- Dashboard End -->
+
+<!-- Donor Registration Start -->
+<section id="register" data-page="register">
+  <h2>Donor Registration</h2>
+  <div class="box">
+    <div id="donorMsg" class="msg"></div>
+
+    <!-- Donor Form Start -->
+    <form id="donorForm" novalidate>
+      <input type="hidden" id="donorId"> <!-- empty = new donor, filled = editing -->
+      <div class="form-grid">
+        <div><label>Full Name</label><input type="text" id="dName"></div>
+        <div><label>Age (18-65)</label><input type="number" id="dAge"></div>
+        <div><label>Gender</label>
+          <select id="dGender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+        <div><label>Blood Group</label>
+          <select id="dBlood"><option value="">Select</option></select></div>
+        <div><label>Phone (10 digits)</label><input type="text" id="dPhone" maxlength="10"></div>
+        <div><label>Email</label><input type="email" id="dEmail"></div>
+        <div><label>City</label><input type="text" id="dCity"></div>
+        <div><label>Last Donation Date</label><input type="date" id="dLast"></div>
+        <div><label>Weight (kg, min 50)</label><input type="number" id="dWeight"></div>
+        <div><label>Health Status</label>
+          <select id="dHealth"><option>Healthy</option><option>Has Illness</option></select></div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn" id="donorSubmit">Register Donor</button>
+        <button type="button" class="btn btn-grey" id="donorCancel">Clear</button>
+      </div>
+    </form>
+    <!-- Donor Form End -->
+  </div>
+
+  <h3 class="section-subtitle">Registered Donors</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Age</th><th>Blood</th><th>City</th><th>Phone</th><th>Actions</th></tr></thead>
+      <tbody id="donorListBody"></tbody>
+    </table>
+  </div>
+</section>
+<!-- Donor Registration End -->
+
+<!-- Find Donor Start -->
+<section id="find" data-page="find">
+  <h2>Find Donor</h2>
+  <div class="box filters">
+    <div><label>Search (Name / City)</label><input type="text" id="searchBox" placeholder="Type to search..."></div>
+    <div><label>Blood Group</label><select id="filterBlood"><option value="">All</option></select></div>
+    <div><label>City</label><select id="filterCity"><option value="">All</option></select></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Blood Group</th><th>City</th><th>Phone</th><th>Last Donation</th><th>Status</th></tr></thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</section>
+<!-- Find Donor End -->
+
+<!-- Blood Inventory Start -->
+<section id="inventory" data-page="inventory">
+  <h2>Blood Inventory</h2>
+  <p class="section-subtitle">Enter number of units, then click Add or Remove.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Blood Group</th><th>Units Available</th><th>Status</th><th>Update Stock</th></tr></thead>
+      <tbody id="inventoryBody"></tbody>
+    </table>
+  </div>
+</section>
+<!-- Blood Inventory End -->
+
+<!-- Blood Request Start -->
+<section id="requests" data-page="requests">
+  <h2>Blood Requests</h2>
+  <div class="box">
+    <div id="reqMsg" class="msg"></div>
+    <form id="requestForm" novalidate>
+      <div class="form-grid">
+        <div><label>Patient Name</label><input type="text" id="rPatient"></div>
+        <div><label>Hospital</label><input type="text" id="rHospital"></div>
+        <div><label>Blood Group Needed</label><select id="rBlood"><option value="">Select</option></select></div>
+        <div><label>Units Needed</label><input type="number" id="rUnits" min="1"></div>
+        <div><label>Urgency</label><select id="rUrgency"><option>Normal</option><option>Urgent</option></select></div>
+        <div><label>Contact Number</label><input type="text" id="rPhone" maxlength="10"></div>
+      </div>
+      <div class="actions"><button type="submit" class="btn">Submit Request</button></div>
+    </form>
+  </div>
+
+  <h3 class="section-subtitle">Request List</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Patient</th><th>Hospital</th><th>Blood</th><th>Units</th><th>Urgency</th><th>Contact</th><th>Status</th></tr></thead>
+      <tbody id="requestBody"></tbody>
+    </table>
+  </div>
+</section>
+<!-- Blood Request End -->
+
+<!-- Contact Start -->
+<section id="contact" data-page="contact">
+  <h2>Contact</h2>
+  <div class="box">
+    <p><b>LifeBlood Blood Bank</b></p>
+    <p>Email:vanshmahajan21006@gmail.com</p>
+    <p>Phone: 9646429739 (24x7 Emergency Helpline)</p>
+    <p>Address: Amritsar, Punjab</p>
+  </div>
+</section>
+<!-- Contact End -->
+
+<footer>&copy; 2026 LifeBlood - Blood Donation Management System</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
